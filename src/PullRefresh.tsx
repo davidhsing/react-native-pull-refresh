@@ -1,44 +1,28 @@
 import React, { memo, type PropsWithChildren, useCallback } from 'react';
-import type {
-  LayoutChangeEvent,
-  NativeScrollEvent,
-  ViewStyle,
-} from 'react-native';
+import type { LayoutChangeEvent,  NativeScrollEvent, ViewStyle } from 'react-native';
 import { StyleSheet, View } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import {
-  Extrapolate,
-  interpolate,
-  runOnJS,
-  runOnUI,
-  useAnimatedScrollHandler,
-  useAnimatedStyle,
-  useSharedValue,
-} from 'react-native-reanimated';
-
-import {
-  FnNull,
-  LogFlag,
-  PullingRefreshStatus,
-  SystemOffset,
-} from './constants';
+import { Extrapolate, interpolate, runOnJS, runOnUI, useAnimatedScrollHandler, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
+import { FnNull, LogFlag, PullingRefreshStatus, SystemOffset } from './constants';
 import { MrPullRefreshContext } from './context';
 import { PulldownLoading, PullupLoading } from './DefaultLoading';
 import { actuallyMove, checkChildren, isPromise, withAnimation } from './utils';
-interface MrRefreshWrapperProps {
+
+
+interface RefreshWrapperProps {
   onPulldownRefresh?: () => void | Promise<unknown>;
   onPullupRefresh?: () => void | Promise<unknown>;
   pulldownHeight?: number;
   pullupHeight?: number;
-  pulldownLoading?: JSX.Element;
-  pullupLoading?: JSX.Element;
+  pulldownLoading?: React.ReactNode;
+  pullupLoading?: React.ReactNode;
   containerFactor?: number;
   pullingFactor?: number;
-  enablePullup?: boolean;
+  pullupEnabled?: boolean;
   style?: ViewStyle;
 }
 
-const MrRefreshWrapper: React.FC<PropsWithChildren<MrRefreshWrapperProps>> = ({
+const RefreshWrapper: React.FC<PropsWithChildren<RefreshWrapperProps>> = ({
   onPulldownRefresh = FnNull,
   onPullupRefresh = FnNull,
   pulldownHeight = 80,
@@ -47,7 +31,7 @@ const MrRefreshWrapper: React.FC<PropsWithChildren<MrRefreshWrapperProps>> = ({
   pullupLoading = <PullupLoading />,
   containerFactor = 0.5,
   pullingFactor = 2.2,
-  enablePullup = true /* TODO: will re-render */,
+  pullupEnabled = false /* TODO: will re-render */,
   style,
   children,
 }) => {
@@ -74,6 +58,8 @@ const MrRefreshWrapper: React.FC<PropsWithChildren<MrRefreshWrapperProps>> = ({
     }
 
     runOnUI(() => {
+      'worklet';
+
       pulldownState.value = PullingRefreshStatus.BACKUP;
       panTranslateY.value = withAnimation(0, () => {
         pulldownState.value = PullingRefreshStatus.IDLE;
@@ -89,6 +75,8 @@ const MrRefreshWrapper: React.FC<PropsWithChildren<MrRefreshWrapperProps>> = ({
     }
 
     runOnUI(() => {
+      'worklet';
+
       pullupState.value = PullingRefreshStatus.BACKUP;
       panTranslateY.value = withAnimation(0, () => {
         pullupState.value = PullingRefreshStatus.IDLE;
@@ -100,6 +88,7 @@ const MrRefreshWrapper: React.FC<PropsWithChildren<MrRefreshWrapperProps>> = ({
   // FIXME: 响应有一个延时偏差，本来就很难搞呀
   const panGesture = Gesture.Pan()
     .onStart(event => {
+      'worklet';
       // FIXME: Check Pull Status.
       if (
         pulldownState.value >= PullingRefreshStatus.PULLINGBACK ||
@@ -131,6 +120,7 @@ const MrRefreshWrapper: React.FC<PropsWithChildren<MrRefreshWrapperProps>> = ({
       LogFlag && console.log('onStart', pulldownState.value, pullupState.value);
     })
     .onChange(event => {
+      'worklet';
       // when loading do nothing.
       if (
         pulldownState.value >= PullingRefreshStatus.PULLINGBACK ||
@@ -243,6 +233,7 @@ const MrRefreshWrapper: React.FC<PropsWithChildren<MrRefreshWrapperProps>> = ({
         console.log('onChange', pulldownState.value, pullupState.value);
     })
     .onEnd(() => {
+      'worklet';
       if (
         pulldownState.value >= PullingRefreshStatus.PULLINGBACK ||
         pullupState.value >= PullingRefreshStatus.PULLINGBACK
@@ -380,17 +371,16 @@ const MrRefreshWrapper: React.FC<PropsWithChildren<MrRefreshWrapperProps>> = ({
   });
 
   const onScroll = useAnimatedScrollHandler((event: NativeScrollEvent) => {
-    // FIXME: 下拉刷新是一定依赖这个数据值的，不然你无法处理的
-    scrollerOffsetY.value = event.contentOffset.y;
-    // LogFlag && console.log('onScroll', event.contentOffset);
+      // FIXME: 下拉刷新是一定依赖这个数据值的，不然你无法处理的
+      scrollerOffsetY.value = event.contentOffset.y;
+      // LogFlag && console.log('onScroll', event.contentOffset);
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    if (children.onScroll) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      const _children = children as React.ReactElement;
       // @ts-ignore
-      runOnJS(children.onScroll)(event);
-    }
+      if (_children?.props?.onScroll) {
+          // @ts-ignore
+          runOnJS(_children?.props?.onScroll)(event);
+      }
   });
 
   const onLayout = useCallback(
@@ -454,7 +444,7 @@ const MrRefreshWrapper: React.FC<PropsWithChildren<MrRefreshWrapperProps>> = ({
             onLayout,
           })}
         </GestureDetector>
-        {enablePullup && pullupLoading}
+        {pullupEnabled && pullupLoading}
       </View>
     </MrPullRefreshContext.Provider>
   );
@@ -472,4 +462,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export const MrPullRefresh = memo(MrRefreshWrapper);
+export const PullRefresh = memo(RefreshWrapper);

@@ -1,127 +1,117 @@
 {
-  "name": "react-native-mr-pullrefresh",
-  "version": "0.2.7",
-  "description": "react-native pull refresh on iOS, Android and Web",
-  "main": "lib/commonjs/index",
-  "module": "lib/module/index",
-  "types": "lib/typescript/index.d.ts",
-  "react-native": "src/index",
-  "source": "src/index",
-  "files": [
-    "src",
-    "lib",
-    "android",
-    "ios",
-    "cpp",
-    "*.podspec",
-    "!lib/typescript/example",
-    "!ios/build",
-    "!android/build",
-    "!android/gradle",
-    "!android/gradlew",
-    "!android/gradlew.bat",
-    "!android/local.properties",
-    "!**/__tests__",
-    "!**/__fixtures__",
-    "!**/__mocks__",
-    "!**/.*"
-  ],
-  "scripts": {
-    "test": "jest",
-    "typecheck": "tsc --noEmit",
-    "lint": "eslint \"src/**/*.{js,ts,tsx}\"",
-    "prepack": "bob build",
-    "release": "release-it",
-    "release:ci": "release-it --ci",
-    "example": "yarn --cwd example",
-    "bootstrap": "yarn example && yarn install",
-    "changelog": "npx conventional-changelog -p conventionalcommits -i CHANGELOG.md -r 0 -s",
-    "git:release": "git tag release && git push origin tag release && git tag -d release"
-  },
-  "keywords": [
-    "react-native",
-    "ios",
-    "android",
-    "pull refresh"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:little-buddy/react-native-mr-pullrefresh.git"
-  },
-  "author": "buddy <litoubuddy@gmail.com>",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/little-buddy/react-native-mr-pullrefresh/issues"
-  },
-  "homepage": "https://github.com/little-buddy/react-native-mr-pullrefresh.git#readme",
-  "publishConfig": {
-    "registry": "https://registry.npmjs.org/"
-  },
-  "devDependencies": {
-    "@commitlint/config-conventional": "17.0.2",
-    "@evilmartians/lefthook": "^1.2.2",
-    "@react-native-community/eslint-config": "^3.0.2",
-    "@release-it/conventional-changelog": "^7.0.1",
-    "@types/jest": "^28.1.2",
-    "@types/react": "~17.0.21",
-    "@types/react-native": "0.70.0",
-    "commitlint": "^17.0.2",
-    "conventional-changelog-cli": "^4.0.0",
-    "del-cli": "^5.0.0",
-    "eslint": "^8.4.1",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-prettier": "^4.0.0",
-    "eslint-plugin-simple-import-sort": "^10.0.0",
-    "jest": "^28.1.1",
-    "lottie-react-native": "^6.2.0",
-    "pod-install": "^0.1.0",
-    "prettier": "^2.0.5",
-    "react": "18.2.0",
-    "react-native": "0.72.4",
-    "react-native-builder-bob": "^0.20.0",
-    "react-native-gesture-handler": "^2.12.1",
-    "react-native-reanimated": "3.3.0",
-    "release-it": "^16.1.5",
-    "source-map-support": "^0.5.21",
-    "typescript": "^5.0.2"
-  },
-  "resolutions": {
-    "@types/react": "17.0.21"
-  },
-  "peerDependencies": {
-    "react": "*",
-    "react-native": "*",
-    "react-native-gesture-handler": "*",
-    "react-native-reanimated": "*"
-  },
-  "engines": {
-    "node": ">= 16.0.0"
-  },
-  "packageManager": "^yarn@1.22.15",
-  "jest": {
-    "preset": "react-native",
-    "modulePathIgnorePatterns": [
-      "<rootDir>/example/node_modules",
-      "<rootDir>/lib/"
-    ]
-  },
-  "commitlint": {
-    "extends": [
-      "@commitlint/config-conventional"
-    ]
-  },
-  "react-native-builder-bob": {
-    "source": "src",
-    "output": "lib",
-    "targets": [
-      "commonjs",
-      "module",
-      [
-        "typescript",
-        {
-          "project": "tsconfig.build.json"
-        }
-      ]
-    ]
-  }
+    "name": "@unikue/react-native-pull-refresh",
+    "version": "1.2.0",
+    "description": "react-native pull refresh on iOS, Android and Web",
+    "main": "dist/commonjs/index",
+    "module": "dist/module/index",
+    "types": "dist/typescript/index.d.ts",
+    "react-native": "dist/commonjs/index",
+    "source": "src/index",
+    "files": [
+        "dist",
+        "android",
+        "ios",
+        "cpp",
+        "*.podspec",
+        "!dist/typescript/example",
+        "!ios/build",
+        "!android/build",
+        "!android/gradle",
+        "!android/gradlew",
+        "!android/gradlew.bat",
+        "!android/local.properties",
+        "!**/__tests__",
+        "!**/__fixtures__",
+        "!**/__mocks__",
+        "!**/.*"
+    ],
+    "scripts": {
+        "test": "jest",
+        "typecheck": "tsc --noEmit",
+        "lint": "eslint \"src/**/*.{js,ts,tsx}\"",
+        "build": "bob build",
+        "release": "release-it",
+        "release:ci": "release-it --ci",
+        "example": "npm install --prefix example",
+        "bootstrap": "npm run example && npm install",
+        "changelog": "npx conventional-changelog -p conventionalcommits -i CHANGELOG.md -r 0 -s",
+        "git:release": "git tag release && git push origin tag release && git tag -d release",
+        "upgrade": "npx npm-check-updates --target semver -u"
+    },
+    "keywords": [
+        "react-native",
+        "ios",
+        "android",
+        "pull refresh"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:davidhsing/react-native-pull-refresh.git"
+    },
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/davidhsing/react-native-pull-refresh/issues"
+    },
+    "homepage": "https://github.com/davidhsing/react-native-pull-refresh.git",
+    "publishConfig": {
+        "access": "public",
+        "registry": "https://registry.npmjs.org/"
+    },
+    "devDependencies": {
+        "@commitlint/config-conventional": "21.2.0",
+        "@react-native-community/eslint-config": "^3.2.0",
+        "@release-it/conventional-changelog": "^11.0.1",
+        "@types/jest": "^30.0.0",
+        "@types/react": "~19.2.17",
+        "@types/react-native": "0.73.0",
+        "commitlint": "^21.2.0",
+        "conventional-changelog-cli": "^5.0.0",
+        "del-cli": "^7.0.0",
+        "eslint": "^9.39.4",
+        "eslint-config-prettier": "^10.1.8",
+        "eslint-plugin-prettier": "^5.5.6",
+        "eslint-plugin-simple-import-sort": "^13.0.0",
+        "jest": "^30.4.2",
+        "lottie-react-native": "^7.3.8",
+        "pod-install": "^1.1.0",
+        "prettier": "^3.9.4",
+        "react": "19.2.3",
+        "react-native": "~0.85.3",
+        "react-native-builder-bob": "^0.43.0",
+        "react-native-gesture-handler": "^2.32.0",
+        "react-native-reanimated": "~4.3.1",
+        "release-it": "^20.2.1",
+        "source-map-support": "^0.5.21",
+        "typescript": "^6.0.3"
+    },
+    "peerDependencies": {
+        "react": "*",
+        "react-native": "*",
+        "react-native-gesture-handler": "*",
+        "react-native-reanimated": "*"
+    },
+    "engines": {
+        "node": ">=16.0.0"
+    },
+    "jest": {
+        "preset": "react-native",
+        "modulePathIgnorePatterns": [
+            "<rootDir>/example/node_modules",
+            "<rootDir>/dist/"
+        ]
+    },
+    "react-native-builder-bob": {
+        "source": "src",
+        "output": "dist",
+        "targets": [
+            "commonjs",
+            "module",
+            [
+                "typescript",
+                {
+                    "project": "tsconfig.build.json"
+                }
+            ]
+        ]
+    }
 }

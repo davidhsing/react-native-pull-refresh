@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { delayTime, MrPullRefresh } from 'react-native-mr-pullrefresh';
+import { delayTime, PullRefresh } from 'react-native-pull-refresh';
 import Animated from 'react-native-reanimated';
 
 export default function App() {
@@ -21,7 +21,7 @@ export default function App() {
     <SafeAreaView style={{ flex: 1, backgroundColor: '#f6f8fa' }}>
       <GestureHandlerRootView style={{ flex: 1 }}>
         <View style={styles.container}>
-          <MrPullRefresh
+          <PullRefresh
             onPulldownRefresh={pulldownLoader}
             onPullupRefresh={pullupLoader}
           >
@@ -47,7 +47,7 @@ export default function App() {
                 </View>
               ))}
             </Animated.ScrollView>
-          </MrPullRefresh>
+          </PullRefresh>
         </View>
       </GestureHandlerRootView>
     </SafeAreaView>

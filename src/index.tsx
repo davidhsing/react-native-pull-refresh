@@ -6,5 +6,5 @@ export {
   useOnPullupState,
 } from './hooks';
 export { InlineLoadMore } from './LoadMore';
-export { MrPullRefresh } from './MrPullRefresh';
+export { PullRefresh } from './PullRefresh';
 export { delayTime } from './utils';

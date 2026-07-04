@@ -14,11 +14,7 @@ export const getWindowHeight = () => Dimensions.get('window').height;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const isPromise = (p: any) => {
-  if (typeof p === 'object' && typeof p.then === 'function') {
-    return true;
-  }
-
-  return false;
+  return typeof p === 'object' && typeof p.then === 'function';
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -29,7 +25,7 @@ export const checkChildren = (children: React.ReactElement<unknown, any>) => {
     return onlyChild;
   }
 
-  throw new Error(`[react-native-mr-pullrefresh]
+  throw new Error(`[react-native-pull-refresh]
     MrPullRefresh only support
       Animated.ScrollView、
       Animated.FlatList
