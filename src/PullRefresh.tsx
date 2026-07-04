@@ -4,7 +4,7 @@ import { StyleSheet, View } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import { Extrapolate, interpolate, runOnJS, runOnUI, useAnimatedScrollHandler, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 import { FnNull, LogFlag, PullingRefreshStatus, SystemOffset } from './constants';
-import { MrPullRefreshContext } from './context';
+import { PullRefreshContext } from './context';
 import { PulldownLoading, PullupLoading } from './DefaultLoading';
 import { actuallyMove, checkChildren, isPromise, withAnimation } from './utils';
 
@@ -414,7 +414,7 @@ const RefreshWrapper: React.FC<PropsWithChildren<RefreshWrapperProps>> = ({
   ];
 
   return (
-    <MrPullRefreshContext.Provider
+    <PullRefreshContext.Provider
       value={{
         pulldownState,
         pullupState,
@@ -446,7 +446,7 @@ const RefreshWrapper: React.FC<PropsWithChildren<RefreshWrapperProps>> = ({
         </GestureDetector>
         {pullupEnabled && pullupLoading}
       </View>
-    </MrPullRefreshContext.Provider>
+    </PullRefreshContext.Provider>
   );
 };
 

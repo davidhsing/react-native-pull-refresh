@@ -1,7 +1,7 @@
 export { PullingRefreshStatus } from './constants';
 export { PulldownLoading, PullupLoading } from './DefaultLoading';
 export {
-  useMrPullRefreshValue,
+  usePullRefreshValue,
   useOnPulldownState,
   useOnPullupState,
 } from './hooks';

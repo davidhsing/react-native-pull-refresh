@@ -26,7 +26,7 @@ export const checkChildren = (children: React.ReactElement<unknown, any>) => {
   }
 
   throw new Error(`[react-native-pull-refresh]
-    MrPullRefresh only support
+    PullRefresh only support
       Animated.ScrollView、
       Animated.FlatList
     as a Child`);

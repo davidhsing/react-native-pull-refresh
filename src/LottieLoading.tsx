@@ -11,14 +11,14 @@ import Animated, {
 import heroJson from './assets/hero.json';
 // import heroLottie from './assets/hero.lottie';
 import { PullingRefreshStatus } from './constants';
-import { useMrPullRefreshValue, useOnPulldownState } from './hooks';
+import { usePullRefreshValue, useOnPulldownState } from './hooks';
 import { actuallyMove } from './utils';
 const AnimatedLottieView = Animated.createAnimatedComponent(LottieView);
 
 export const HeroLottie = () => {
   const lottieRef = useRef<LottieView>(null);
 
-  const ctx = useMrPullRefreshValue();
+  const ctx = usePullRefreshValue();
 
   const {
     pulldownHeight,

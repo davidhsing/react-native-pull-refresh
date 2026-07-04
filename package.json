@@ -1,6 +1,6 @@
 {
     "name": "@unikue/react-native-pull-refresh",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "description": "react-native pull refresh on iOS, Android and Web",
     "main": "dist/commonjs/index",
     "module": "dist/module/index",

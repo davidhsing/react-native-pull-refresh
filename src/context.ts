@@ -4,7 +4,7 @@ import type { SharedValue } from 'react-native-reanimated';
 import type { PullingRefreshStatus } from './constants';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-type MrPullRefreshContextValue = {
+type PullRefreshContextValue = {
   pulldownState: SharedValue<PullingRefreshStatus>;
   pullupState: SharedValue<PullingRefreshStatus>;
   panTranslateY: SharedValue<number>;
@@ -17,7 +17,7 @@ type MrPullRefreshContextValue = {
   containerFactor: number;
 };
 
-export const MrPullRefreshContext =
+export const PullRefreshContext =
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-  createContext<MrPullRefreshContextValue>(null);
+  createContext<PullRefreshContextValue>(null);

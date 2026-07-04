@@ -3,7 +3,7 @@ import { Text, View } from 'react-native';
 import { useAnimatedReaction } from 'react-native-reanimated';
 
 import { FnNull } from './constants';
-import { useMrPullRefreshValue } from './hooks';
+import { usePullRefreshValue } from './hooks';
 
 interface InlineLoadMoreProps {
   onLoadMore: typeof FnNull;
@@ -12,7 +12,7 @@ interface InlineLoadMoreProps {
 export const InlineLoadMore: React.FC<InlineLoadMoreProps> = ({
   onLoadMore = FnNull,
 }) => {
-  const ctx = useMrPullRefreshValue();
+  const ctx = usePullRefreshValue();
 
   useAnimatedReaction(
     () => ctx.scrollerOffsetY.value,

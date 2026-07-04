@@ -8,10 +8,10 @@ import {
 } from 'react-native-reanimated';
 
 import { type PullingRefreshStatus } from './constants';
-import { MrPullRefreshContext } from './context';
+import { PullRefreshContext } from './context';
 
-export const useMrPullRefreshValue = () => {
-  const value = useContext(MrPullRefreshContext);
+export const usePullRefreshValue = () => {
+  const value = useContext(PullRefreshContext);
 
   return value;
 };
@@ -19,7 +19,7 @@ export const useMrPullRefreshValue = () => {
 export const useOnPulldownState = (
   onChange: (value: PullingRefreshStatus) => void
 ) => {
-  const ctx = useMrPullRefreshValue();
+  const ctx = usePullRefreshValue();
 
   useAnimatedReaction(
     () => ctx.pulldownState.value,
@@ -33,7 +33,7 @@ export const useOnPulldownState = (
 };
 
 export const usePulldownLoadingAnimation = () => {
-  const ctx = useMrPullRefreshValue();
+  const ctx = usePullRefreshValue();
 
   const { pulldownHeight, panTranslateY } = ctx;
 
@@ -56,7 +56,7 @@ export const usePulldownLoadingAnimation = () => {
 export const useOnPullupState = (
   onChange: (value: PullingRefreshStatus) => void
 ) => {
-  const ctx = useMrPullRefreshValue();
+  const ctx = usePullRefreshValue();
 
   useAnimatedReaction(
     () => ctx.pullupState.value,
@@ -69,7 +69,7 @@ export const useOnPullupState = (
 };
 
 export const usePullupLoadingAnimation = () => {
-  const ctx = useMrPullRefreshValue();
+  const ctx = usePullRefreshValue();
 
   const { pullupHeight, panTranslateY } = ctx;
 
