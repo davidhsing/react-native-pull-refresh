@@ -52,6 +52,8 @@ example/vendor/
 node_modules/
 npm-debug.log
 package-lock.json
+pnpm-lock.yaml
+pnpm-workspace.yaml
 yarn-debug.log
 yarn-error.log
 

@@ -83,6 +83,7 @@
         "typescript": "^6.0.3"
     },
     "peerDependencies": {
+        "eslint-plugin-ft-flow": "*",
         "react": "*",
         "react-native": "*",
         "react-native-gesture-handler": "*",
