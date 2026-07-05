@@ -1,6 +1,6 @@
 {
     "name": "@unikue/react-native-pull-refresh",
-    "version": "1.2.1",
+    "version": "1.2.2",
     "description": "react-native pull refresh on iOS, Android and Web",
     "main": "dist/commonjs/index",
     "module": "dist/module/index",
@@ -28,7 +28,7 @@
     "scripts": {
         "test": "jest",
         "typecheck": "tsc --noEmit",
-        "lint": "eslint \"src/**/*.{js,ts,tsx}\"",
+        "lint": "ESLINT_USE_FLAT_CONFIG=false eslint \"src/**/*.{js,ts,tsx}\"",
         "build": "bob build",
         "release": "release-it",
         "release:ci": "release-it --ci",
@@ -59,7 +59,7 @@
     },
     "devDependencies": {
         "@commitlint/config-conventional": "21.2.0",
-        "@react-native-community/eslint-config": "^3.2.0",
+        "@react-native/eslint-config": "^0.86.0",
         "@release-it/conventional-changelog": "^11.0.1",
         "@types/jest": "^30.0.0",
         "@types/react": "~19.2.17",
@@ -68,8 +68,6 @@
         "conventional-changelog-cli": "^5.0.0",
         "del-cli": "^7.0.0",
         "eslint": "^9.39.4",
-        "eslint-config-prettier": "^10.1.8",
-        "eslint-plugin-prettier": "^5.5.6",
         "eslint-plugin-simple-import-sort": "^13.0.0",
         "jest": "^30.4.2",
         "lottie-react-native": "^7.3.8",
@@ -79,7 +77,7 @@
         "react-native": "~0.85.3",
         "react-native-builder-bob": "^0.43.0",
         "react-native-gesture-handler": "^2.32.0",
-        "react-native-reanimated": "~4.3.1",
+        "react-native-reanimated": "~4.3.2",
         "release-it": "^20.2.1",
         "source-map-support": "^0.5.21",
         "typescript": "^6.0.3"
@@ -113,5 +111,9 @@
                 }
             ]
         ]
+    },
+    "allowScripts": {
+        "fsevents@*": true,
+        "unrs-resolver@*": true
     }
 }

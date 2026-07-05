@@ -1,23 +1,22 @@
 import { createContext } from 'react';
 import type { SharedValue } from 'react-native-reanimated';
-
 import type { PullingRefreshStatus } from './constants';
+
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 type PullRefreshContextValue = {
-  pulldownState: SharedValue<PullingRefreshStatus>;
-  pullupState: SharedValue<PullingRefreshStatus>;
-  panTranslateY: SharedValue<number>;
-  scrollerOffsetY: SharedValue<number>;
-  contentY: SharedValue<number>;
-  containerY: SharedValue<number>;
-  pulldownHeight: number;
-  pullupHeight: number;
-  pullingFactor: number;
-  containerFactor: number;
+    pulldownState: SharedValue<PullingRefreshStatus>;
+    pullupState: SharedValue<PullingRefreshStatus>;
+    panTranslateY: SharedValue<number>;
+    scrollerOffsetY: SharedValue<number>;
+    contentY: SharedValue<number>;
+    containerY: SharedValue<number>;
+    pulldownHeight: number;
+    pullupHeight: number;
+    pullingFactor: number;
+    containerFactor: number;
 };
 
 export const PullRefreshContext =
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  createContext<PullRefreshContextValue>(null);
+    // @ts-ignore
+    createContext<PullRefreshContextValue>(null);

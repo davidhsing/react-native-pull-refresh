@@ -1,19 +1,19 @@
 export enum PullingRefreshStatus {
-  IDLE,
-  PULLING,
-  PULLINGGO,
-  PULLINGBACK,
-  LOADING,
-  BACKUP,
+    IDLE,
+    PULLING,
+    PULLINGGO,
+    PULLINGBACK,
+    LOADING,
+    BACKUP,
 }
 
 export const iOSpringConfig = {
-  velocity: 0,
-  mass: 1,
-  damping: 27,
-  stiffness: 300,
-  overshootClamping: true,
-  // duration: 600,
+    velocity: 0,
+    mass: 1,
+    damping: 27,
+    stiffness: 300,
+    overshootClamping: true,
+    // duration: 600,
 };
 
 export const SystemOffset = 1;
@@ -23,5 +23,5 @@ export const SystemOffset = 1;
 export const LogFlag = false;
 
 export const FnNull = () => {
-  /*  */
+    /*  */
 };

@@ -1,26 +1,20 @@
+const path = require('path');
+
 module.exports = {
   root: true,
   parserOptions: {
     sourceType: 'module',
     project: 'tsconfig.eslint.json',
-    tsconfigRootDir: './',
+    tsconfigRootDir: __dirname,
   },
-  ignorePatterns: ['.eslintrc.js'],
-  extends: ['@react-native-community', 'prettier'],
-  plugins: ['@typescript-eslint/eslint-plugin', 'simple-import-sort'],
+  ignorePatterns: ['.eslintrc.js', 'node_modules/', 'dist/'],
+  extends: ['@react-native/eslint-config'],
+  plugins: ['@typescript-eslint', 'simple-import-sort'],
   rules: {
-    'prettier/prettier': [
-      'error',
-      {
-        quoteProps: 'consistent',
-        singleQuote: true,
-        tabWidth: 2,
-        trailingComma: 'es5',
-        useTabs: false,
-      },
-    ],
-    'simple-import-sort/imports': 'error',
-    'simple-import-sort/exports': 'error',
+    'prettier/prettier': 'off',
+    'simple-import-sort/imports': 'off',
+    'simple-import-sort/exports': 'off',
+    'react-native/no-inline-styles': 'off',
     /**
      * plugin:typescript-eslint
      */
@@ -29,7 +23,7 @@ module.exports = {
     '@typescript-eslint/adjacent-overload-signatures': 'error',
     'max-params': ['error', 7],
     '@typescript-eslint/array-type': ['error', { default: 'array-simple' }],
-    '@typescript-eslint/ban-types': [
+    '@typescript-eslint/no-restricted-types': [
       'error',
       {
         types: {
@@ -76,31 +70,32 @@ module.exports = {
       },
     ],
     // '@typescript-eslint/indent': 'off',
-    '@typescript-eslint/member-delimiter-style': [
-      'error',
-      {
-        multiline: {
-          delimiter: 'semi',
-          requireLast: true,
-        },
-        singleline: {
-          delimiter: 'semi',
-          requireLast: false,
-        },
-      },
-    ],
+    // '@typescript-eslint/member-delimiter-style': [
+    //   'error',
+    //   {
+    //     multiline: {
+    //       delimiter: 'semi',
+    //       requireLast: true,
+    //     },
+    //     singleline: {
+    //       delimiter: 'semi',
+    //       requireLast: false,
+    //     },
+    //   },
+    // ],
     '@typescript-eslint/member-ordering': 'off',
-    '@typescript-eslint/no-angle-bracket-type-assertion': 'off',
+    '@typescript-eslint/consistent-type-assertions': 'off',
     '@typescript-eslint/no-empty-function': 'error',
     '@typescript-eslint/no-unnecessary-condition': 'error',
     '@typescript-eslint/no-confusing-non-null-assertion': 'warn',
+    '@typescript-eslint/no-confusing-void-expression': 'off',
     '@typescript-eslint/no-duplicate-enum-values': 'error',
     '@typescript-eslint/no-empty-interface': 'error',
     '@typescript-eslint/no-unnecessary-type-assertion': 'error',
     '@typescript-eslint/no-explicit-any': 'error',
     '@typescript-eslint/no-inferrable-types': 'error',
-    '@typescript-eslint/await-thenable': 'error',
-    '@typescript-eslint/ban-ts-comment': 'error',
+    '@typescript-eslint/await-thenable': 'off',
+    '@typescript-eslint/ban-ts-comment': 'off',
     '@typescript-eslint/ban-tslint-comment': 'error',
     '@typescript-eslint/consistent-indexed-object-style': 'error',
     '@typescript-eslint/consistent-type-definitions': ['error', 'interface'],
@@ -112,7 +107,7 @@ module.exports = {
     '@typescript-eslint/restrict-template-expressions': 'off',
     '@typescript-eslint/no-require-imports': 'error',
     'keyword-spacing': 'off',
-    '@typescript-eslint/keyword-spacing': 'error',
+    // '@typescript-eslint/keyword-spacing': 'error',
     '@typescript-eslint/no-namespace': 'error',
     '@typescript-eslint/no-this-alias': 'error',
     // '@typescript-eslint/no-use-before-define': 'error',
@@ -120,14 +115,14 @@ module.exports = {
     '@typescript-eslint/prefer-for-of': 'error',
     '@typescript-eslint/prefer-function-type': 'error',
     '@typescript-eslint/prefer-namespace-keyword': 'error',
-    '@typescript-eslint/quotes': [
-      'error',
-      'single',
-      {
-        avoidEscape: true,
-        allowTemplateLiterals: true,
-      },
-    ],
+    // '@typescript-eslint/quotes': [
+    //   'error',
+    //   'single',
+    //   {
+    //     avoidEscape: true,
+    //     allowTemplateLiterals: true,
+    //   },
+    // ],
     // '@typescript-eslint/semi': ['error', 'always'],
     '@typescript-eslint/naming-convention': [
       'error',
@@ -165,9 +160,9 @@ module.exports = {
         prefix: ['is', 'should', 'has', 'can', 'did', 'will'],
       },
     ],
-    '@typescript-eslint/type-annotation-spacing': 'error',
+    // '@typescript-eslint/type-annotation-spacing': 'error',
     '@typescript-eslint/unified-signatures': 'error',
-    '@typescript-eslint/interface-name-prefix': 'off',
+    // '@typescript-eslint/interface-name-prefix': 'off',
     '@typescript-eslint/no-non-null-assertion': 'off',
     '@typescript-eslint/no-shadow': 'error',
     '@typescript-eslint/no-unused-expressions': ['error'],
@@ -175,16 +170,7 @@ module.exports = {
      * plugin:eslint
      */
     'no-await-in-loop': 'error',
-    'padding-line-between-statements': [
-      'error',
-      { blankLine: 'always', prev: '*', next: 'return' },
-      { blankLine: 'always', prev: '*', next: 'try' },
-      { blankLine: 'always', prev: 'try', next: '*' },
-      { blankLine: 'always', prev: '*', next: 'block-like' },
-      { blankLine: 'always', prev: 'block-like', next: '*' },
-      { blankLine: 'always', prev: '*', next: 'throw' },
-      { blankLine: 'always', prev: 'var', next: '*' },
-    ],
+    'padding-line-between-statements': 'off',
     'arrow-body-style': 'error',
     // 'arrow-parens': ['error', 'always'],
     'complexity': 'off',
@@ -214,12 +200,7 @@ module.exports = {
     'guard-for-in': 'error',
     'id-match': 'error',
     'max-classes-per-file': 'off',
-    'max-len': [
-      'error',
-      {
-        code: 150,
-      },
-    ],
+    'max-len': 'off',
     'new-parens': 'error',
     'no-bitwise': 'error',
     'no-caller': 'error',
@@ -264,12 +245,7 @@ module.exports = {
     'no-fallthrough': 'error',
     'no-invalid-this': 'error',
     'no-irregular-whitespace': 'error',
-    'no-multiple-empty-lines': [
-      'error',
-      {
-        max: 1,
-      },
-    ],
+    'no-multiple-empty-lines': 'off',
     'no-new-func': 'error',
     'no-new-wrappers': 'error',
     'no-redeclare': 'error',
