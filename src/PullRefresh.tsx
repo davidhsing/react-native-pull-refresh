@@ -10,8 +10,8 @@ import { actuallyMove, checkChildren, withAnimation } from './utils';
 
 
 interface RefreshWrapperProps {
-    onPulldownRefresh?: () => Promise<unknown> | undefined;
-    onPullupRefresh?: () => Promise<unknown> | undefined;
+    onPulldownRefresh?: () => void | Promise<void>;
+    onPullupRefresh?: () => void | Promise<void>;
     pulldownHeight?: number;
     pullupHeight?: number;
     pulldownLoading?: React.ReactNode;
@@ -27,12 +27,12 @@ const RefreshWrapper: React.FC<PropsWithChildren<RefreshWrapperProps>> = ({
     onPulldownRefresh = FnNull,
     onPullupRefresh = FnNull,
     pulldownHeight = 80,
-    pullupHeight = 100,
+    pullupHeight = 80,
     pulldownLoading = <PulldownLoading />,
     pullupLoading = <PullupLoading />,
     containerFactor = 0.5,
     pullingFactor = 2.2,
-    pullupEnabled = false /* TODO: will re-render */,
+    pullupEnabled = false,
     style,
     children,
 }) => {
@@ -47,7 +47,9 @@ const RefreshWrapper: React.FC<PropsWithChildren<RefreshWrapperProps>> = ({
     const lockIDLE = useSharedValue(0);
 
     const onPulldownLoading = async () => {
-        onPulldownRefresh();
+        // await void 在运行时等价于立即 resolve，安全无害
+        // @ts-ignore
+        await onPulldownRefresh();
 
         runOnUI(() => {
             // noinspection BadExpressionStatementJS
@@ -61,7 +63,9 @@ const RefreshWrapper: React.FC<PropsWithChildren<RefreshWrapperProps>> = ({
     };
 
     const onPullupLoading = async () => {
-        onPullupRefresh();
+        // await void 在运行时等价于立即 resolve，安全无害
+        // @ts-ignore
+        await onPullupRefresh();
 
         runOnUI(() => {
             // noinspection BadExpressionStatementJS
@@ -91,7 +95,7 @@ const RefreshWrapper: React.FC<PropsWithChildren<RefreshWrapperProps>> = ({
                 recordValue.value = event.translationY;
             }
 
-            if (scrollerOffsetY.value <= contentY.value - containerY.value - SystemOffset && pullupState.value === PullingRefreshStatus.IDLE && event.translationY < 0) {
+            if (scrollerOffsetY.value >= contentY.value - containerY.value - SystemOffset && pullupState.value === PullingRefreshStatus.IDLE && event.translationY < 0) {
                 pullupState.value = PullingRefreshStatus.PULLING;
                 recordValue.value = event.translationY;
             }
@@ -366,7 +370,11 @@ const RefreshWrapper: React.FC<PropsWithChildren<RefreshWrapperProps>> = ({
                         onLayout,
                     })}
                 </GestureDetector>
-                {pullupEnabled && pullupLoading}
+                {pullupEnabled && (
+                    <View style={[styles.pullupContainer, { height: pullupHeight }]}>
+                        {pullupLoading}
+                    </View>
+                )}
             </View>
         </PullRefreshContext.Provider>
     );
@@ -377,10 +385,17 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     zTop: {
-        zIndex: 2,
+        zIndex: 5,
     },
     overhidden: {
         overflow: 'hidden',
+    },
+    pullupContainer: {
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        zIndex: 9,
     },
 });
 
