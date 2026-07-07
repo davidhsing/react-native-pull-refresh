@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ActivityIndicator, StyleSheet, Text } from 'react-native';
+import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { PullingRefreshStatus } from './constants';
@@ -12,10 +12,10 @@ interface LoadingProps {
 }
 
 export const Loading: React.FC<LoadingProps> = ({ animating }) => (
-    <>
+    <View style={styles.loadingInner}>
         <ActivityIndicator animating={animating} color="#782aeb" />
         <Text style={styles.ml8}>Loading</Text>
-    </>
+    </View>
 );
 
 export const PulldownLoading = () => {
@@ -32,7 +32,7 @@ export const PulldownLoading = () => {
     const animatedStyle = usePulldownLoadingAnimation();
 
     return (
-        <Animated.View style={[styles.loadingrDownContainer, animatedStyle]}>
+        <Animated.View style={[styles.loadingDownContainer, animatedStyle]}>
             <Loading animating={animating} />
         </Animated.View>
     );
@@ -52,31 +52,31 @@ export const PullupLoading = () => {
     const animatedStyle = usePullupLoadingAnimation();
 
     return (
-        <Animated.View style={[styles.loadingrUpContainer, animatedStyle]}>
+        <Animated.View style={[styles.loadingUpContainer, animatedStyle]}>
             <Loading animating={animating} />
         </Animated.View>
     );
 };
 
 const styles = StyleSheet.create({
-    loadingrDownContainer: {
-        position: 'absolute',
+    loadingDownContainer: {
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
         width: '100%',
-        top: 0,
     },
-    loadingrUpContainer: {
-        position: 'absolute',
+    loadingUpContainer: {
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
         width: '100%',
-        bottom: 0,
-        height: 100,
     },
     ml8: {
         marginLeft: 8,
+    },
+    loadingInner: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
 });

@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { delayTime, PullRefresh } from 'react-native-pull-refresh';
+import { delayTime, PullRefresh } from '@unikue/react-native-pull-refresh';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Animated from 'react-native-reanimated';
 
 export default function App() {

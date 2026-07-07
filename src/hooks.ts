@@ -4,11 +4,7 @@ import { type PullingRefreshStatus } from './constants';
 import { PullRefreshContext } from './context';
 
 
-export const usePullRefreshValue = () => {
-    const value = useContext(PullRefreshContext);
-
-    return value;
-};
+export const usePullRefreshValue = () => useContext(PullRefreshContext);
 
 
 export const useOnPulldownState = (onChange: (value: PullingRefreshStatus) => void) => {
@@ -52,7 +48,8 @@ export const useOnPullupState = (onChange: (value: PullingRefreshStatus) => void
             if (current !== prev) {
                 runOnJS(onChange)(current);
             }
-        }
+        },
+        []
     );
 };
 
