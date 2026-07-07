@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { delayTime, PullRefresh } from '@unikue/react-native-pull-refresh';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import Animated from 'react-native-reanimated';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { delayTime, PullRefresh } from '@unikue/react-native-pull-refresh';
+
 
 export default function App() {
   const [data, setData] = React.useState<number[]>([]);
@@ -25,6 +26,7 @@ export default function App() {
           <PullRefresh
             onPulldownRefresh={pulldownLoader}
             onPullupRefresh={pullupLoader}
+            pullupEnabled={true}
           >
             {/* <Animated.FlatList
               data={[]}

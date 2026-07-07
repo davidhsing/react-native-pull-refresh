@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import Animated from 'react-native-reanimated';
-
 import { PullingRefreshStatus } from './constants';
 import { useOnPulldownState, useOnPullupState, usePulldownLoadingAnimation, usePullupLoadingAnimation } from './hooks'; // note: react-native-reanimated only suppot style-animation
 
@@ -19,7 +18,6 @@ export const Loading: React.FC<LoadingProps> = ({ animating }) => (
 );
 
 export const PulldownLoading = () => {
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     const [animating, setAnimating] = useState<boolean>(false);
     useOnPulldownState((state: PullingRefreshStatus) => {
         if ([PullingRefreshStatus.LOADING, PullingRefreshStatus.PULLINGGO, PullingRefreshStatus.PULLINGBACK].includes(state)) {
@@ -39,7 +37,6 @@ export const PulldownLoading = () => {
 };
 
 export const PullupLoading = () => {
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     const [animating, setAnimating] = useState<boolean>(false);
     useOnPullupState((state: PullingRefreshStatus) => {
         if ([PullingRefreshStatus.LOADING, PullingRefreshStatus.PULLINGGO, PullingRefreshStatus.PULLINGBACK].includes(state)) {

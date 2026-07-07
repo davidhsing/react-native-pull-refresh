@@ -355,7 +355,7 @@ const RefreshWrapper: React.FC<PropsWithChildren<RefreshWrapperProps>> = ({
             }}
         >
             <View style={[styles.flex, styles.overhidden, style]}>
-                <Animated.View style={[styles.zLoading, pulldownLoadingStyle]}>
+                <Animated.View style={[styles.pulldownContainer, pulldownLoadingStyle]}>
                     {pulldownLoading}
                 </Animated.View>
                 <GestureDetector gesture={Gesture.Simultaneous(panGesture, native)}>
@@ -397,8 +397,9 @@ const styles = StyleSheet.create({
         right: 0,
         zIndex: 4,
     },
-    zLoading: {
-        zIndex: 4,
+    pulldownContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
     },
 });
 
