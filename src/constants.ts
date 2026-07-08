@@ -17,7 +17,7 @@ export const iOSpringConfig = {
 };
 
 export const PULLDOWN_OFFSET = 1;
-export const PULLUP_OFFSET = 50;
+export const PULLUP_OFFSET = 60;
 
 // true -> dev
 export const LOG_FLAG = false;
