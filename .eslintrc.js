@@ -229,7 +229,6 @@ module.exports = {
         ],
         'no-debugger': 'error',
         'no-duplicate-case': 'error',
-        'no-empty': 'error',
         'no-eval': 'error',
         'no-extra-bind': 'error',
         'no-fallthrough': 'error',

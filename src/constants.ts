@@ -16,11 +16,11 @@ export const iOSpringConfig = {
     // duration: 600,
 };
 
-export const SystemOffset = 1;
+export const PULLDOWN_OFFSET = 1;
+export const PULLUP_OFFSET = 50;
 
 // true -> dev
-// eslint-disable-next-line @typescript-eslint/naming-convention
-export const LogFlag = false;
+export const LOG_FLAG = false;
 
 export const FnNull = () => {
     /*  */

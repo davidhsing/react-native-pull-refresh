@@ -1,38 +1,39 @@
 import React, { memo, type PropsWithChildren, useCallback } from 'react';
-import type { LayoutChangeEvent, NativeScrollEvent, ViewStyle } from 'react-native';
+import type { LayoutChangeEvent, NativeScrollEvent, ViewProps } from 'react-native';
 import { StyleSheet, View } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, { Extrapolate, interpolate, runOnJS, runOnUI, useAnimatedScrollHandler, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
-import { FnNull, LogFlag, PullingRefreshStatus, SystemOffset } from './constants';
+import { FnNull, PullingRefreshStatus, LOG_FLAG, PULLDOWN_OFFSET, PULLUP_OFFSET } from './constants';
 import { PullRefreshContext } from './context';
 import { PulldownLoading, PullupLoading } from './DefaultLoading';
 import { actuallyMove, checkChildren, withAnimation } from './utils';
 
 
-interface RefreshWrapperProps {
-    onPulldownRefresh?: () => void | Promise<void>;
-    onPullupRefresh?: () => void | Promise<void>;
+export type RefreshWrapperProps = ViewProps & {
+    pulldownEnabled?: boolean;
+    pullupEnabled?: boolean;
     pulldownHeight?: number;
     pullupHeight?: number;
     pulldownLoading?: React.ReactNode;
     pullupLoading?: React.ReactNode;
     containerFactor?: number;
     pullingFactor?: number;
-    pullupEnabled?: boolean;
-    style?: ViewStyle;
+    onPulldownRefresh?: () => void | Promise<unknown>;
+    onPullupRefresh?: () => void | Promise<unknown>;
 }
 
 
 const RefreshWrapper: React.FC<PropsWithChildren<RefreshWrapperProps>> = ({
-    onPulldownRefresh = FnNull,
-    onPullupRefresh = FnNull,
+    pulldownEnabled = true,
+    pullupEnabled = true,
     pulldownHeight = 80,
     pullupHeight = 80,
     pulldownLoading = <PulldownLoading />,
     pullupLoading = <PullupLoading />,
     containerFactor = 0.5,
     pullingFactor = 2.2,
-    pullupEnabled = false,
+    onPulldownRefresh = FnNull,
+    onPullupRefresh = FnNull,
     style,
     children,
 }) => {
@@ -47,9 +48,16 @@ const RefreshWrapper: React.FC<PropsWithChildren<RefreshWrapperProps>> = ({
     const lockIDLE = useSharedValue(0);
 
     const onPulldownLoading = async () => {
+        if (!pulldownEnabled) {
+            return;
+        }
         // await void 在运行时等价于立即 resolve，安全无害
-        // @ts-ignore
-        await onPulldownRefresh();
+        try {
+            // @ts-ignore
+            await onPulldownRefresh();
+        } catch {
+            // 静默处理
+        }
 
         runOnUI(() => {
             // noinspection BadExpressionStatementJS
@@ -63,9 +71,16 @@ const RefreshWrapper: React.FC<PropsWithChildren<RefreshWrapperProps>> = ({
     };
 
     const onPullupLoading = async () => {
+        if (!pullupEnabled) {
+            return;
+        }
         // await void 在运行时等价于立即 resolve，安全无害
-        // @ts-ignore
-        await onPullupRefresh();
+        try {
+            // @ts-ignore
+            await onPullupRefresh();
+        } catch {
+            // 静默处理
+        }
 
         runOnUI(() => {
             // noinspection BadExpressionStatementJS
@@ -89,19 +104,16 @@ const RefreshWrapper: React.FC<PropsWithChildren<RefreshWrapperProps>> = ({
             if (pulldownState.value >= PullingRefreshStatus.PULLINGBACK || pullupState.value >= PullingRefreshStatus.PULLINGBACK) {
                 return;
             }
-
-            if (scrollerOffsetY.value <= SystemOffset && pulldownState.value === PullingRefreshStatus.IDLE && event.translationY > 0) {
+            if (scrollerOffsetY.value <= PULLDOWN_OFFSET && pulldownState.value === PullingRefreshStatus.IDLE && event.translationY > 0) {
                 pulldownState.value = PullingRefreshStatus.PULLING;
                 recordValue.value = event.translationY;
             }
-
-            if (scrollerOffsetY.value >= contentY.value - containerY.value - SystemOffset && pullupState.value === PullingRefreshStatus.IDLE && event.translationY < 0) {
+            if (scrollerOffsetY.value >= contentY.value - containerY.value - PULLUP_OFFSET && pullupState.value === PullingRefreshStatus.IDLE && event.translationY < 0) {
                 pullupState.value = PullingRefreshStatus.PULLING;
                 recordValue.value = event.translationY;
             }
-
             // eslint-disable-next-line no-console, @typescript-eslint/no-unused-expressions, @typescript-eslint/no-unnecessary-condition
-            LogFlag && console.log('onStart', pulldownState.value, pullupState.value);
+            LOG_FLAG && console.log('onStart', pulldownState.value, pullupState.value);
         })
         .onChange(event => {
             // noinspection BadExpressionStatementJS
@@ -120,7 +132,7 @@ const RefreshWrapper: React.FC<PropsWithChildren<RefreshWrapperProps>> = ({
                     pullupState.value = PullingRefreshStatus.IDLE;
                 }
 
-                if (scrollerOffsetY.value <= SystemOffset) {
+                if (scrollerOffsetY.value <= PULLDOWN_OFFSET) {
                     const newStatus = actuallyMove(event.translationY, containerY.value) > pulldownHeight * pullingFactor ? PullingRefreshStatus.PULLINGGO : PullingRefreshStatus.PULLING;
 
                     if (newStatus !== pulldownState.value) {
@@ -150,11 +162,11 @@ const RefreshWrapper: React.FC<PropsWithChildren<RefreshWrapperProps>> = ({
                 }
 
                 // eslint-disable-next-line @typescript-eslint/no-unused-expressions, @typescript-eslint/no-unnecessary-condition
-                LogFlag &&
+                LOG_FLAG &&
                     // eslint-disable-next-line no-console
-                    console.log('onChangeBottom', scrollerOffsetY.value >= contentY.value - containerY.value - SystemOffset);
+                    console.log('onChangeBottom', scrollerOffsetY.value >= contentY.value - containerY.value - PULLUP_OFFSET);
 
-                if (scrollerOffsetY.value >= contentY.value - containerY.value - SystemOffset) {
+                if (scrollerOffsetY.value >= contentY.value - containerY.value - PULLUP_OFFSET) {
                     const newStatus = actuallyMove(-event.translationY, containerY.value) > pullupHeight * pullingFactor ? PullingRefreshStatus.PULLINGGO : PullingRefreshStatus.PULLING;
 
                     if (newStatus !== pullupState.value) {
@@ -184,12 +196,12 @@ const RefreshWrapper: React.FC<PropsWithChildren<RefreshWrapperProps>> = ({
             // FIXME: when fast move, need recheck it
 
             // eslint-disable-next-line @typescript-eslint/no-unused-expressions, @typescript-eslint/no-unnecessary-condition
-            LogFlag &&
+            LOG_FLAG &&
                 // eslint-disable-next-line no-console
                 console.log('onChange-value', scrollerOffsetY.value, contentY.value - containerY.value, contentY.value, containerY.value, scrollerOffsetY.value - (contentY.value - containerY.value));
 
             // eslint-disable-next-line @typescript-eslint/no-unused-expressions, @typescript-eslint/no-unnecessary-condition
-            LogFlag &&
+            LOG_FLAG &&
                 // eslint-disable-next-line no-console
                 console.log('onChange', pulldownState.value, pullupState.value);
         })
@@ -201,11 +213,11 @@ const RefreshWrapper: React.FC<PropsWithChildren<RefreshWrapperProps>> = ({
             }
 
             // eslint-disable-next-line @typescript-eslint/no-unused-expressions, @typescript-eslint/no-unnecessary-condition
-            LogFlag &&
+            LOG_FLAG &&
                 // eslint-disable-next-line no-console
-                console.log(scrollerOffsetY.value >= contentY.value - containerY.value - SystemOffset);
+                console.log(scrollerOffsetY.value >= contentY.value - containerY.value - PULLUP_OFFSET);
 
-            if (scrollerOffsetY.value <= SystemOffset) {
+            if (pulldownEnabled && scrollerOffsetY.value <= PULLDOWN_OFFSET) {
                 if (pulldownState.value !== PullingRefreshStatus.IDLE) {
                     pulldownState.value = panTranslateY.value >= pulldownHeight * pullingFactor ? PullingRefreshStatus.PULLINGBACK : PullingRefreshStatus.BACKUP;
 
@@ -224,7 +236,7 @@ const RefreshWrapper: React.FC<PropsWithChildren<RefreshWrapperProps>> = ({
                 }
             }
 
-            if (scrollerOffsetY.value >= contentY.value - containerY.value - SystemOffset) {
+            if (pullupEnabled && scrollerOffsetY.value >= contentY.value - containerY.value - PULLUP_OFFSET) {
                 if (pullupState.value !== PullingRefreshStatus.IDLE) {
                     pullupState.value = -panTranslateY.value >= pullupHeight * pullingFactor ? PullingRefreshStatus.PULLINGBACK : PullingRefreshStatus.BACKUP;
 
@@ -243,23 +255,22 @@ const RefreshWrapper: React.FC<PropsWithChildren<RefreshWrapperProps>> = ({
                 }
             }
 
-            if (scrollerOffsetY.value >= SystemOffset && scrollerOffsetY.value <= contentY.value - containerY.value - SystemOffset) {
-                if (pulldownState.value !== PullingRefreshStatus.IDLE) {
+            if (scrollerOffsetY.value >= PULLDOWN_OFFSET && scrollerOffsetY.value <= contentY.value - containerY.value - PULLUP_OFFSET) {
+                if (pulldownEnabled && pulldownState.value !== PullingRefreshStatus.IDLE) {
                     pulldownState.value = PullingRefreshStatus.IDLE;
                 }
-
-                if (pullupState.value !== PullingRefreshStatus.IDLE) {
+                if (pullupEnabled && pullupState.value !== PullingRefreshStatus.IDLE) {
                     pullupState.value = PullingRefreshStatus.IDLE;
                 }
             }
 
             // eslint-disable-next-line @typescript-eslint/no-unused-expressions, @typescript-eslint/no-unnecessary-condition
-            LogFlag &&
+            LOG_FLAG &&
                 // eslint-disable-next-line no-console
                 console.log('onEnd-value', scrollerOffsetY.value, contentY.value - containerY.value, contentY.value, containerY.value, scrollerOffsetY.value - (contentY.value - containerY.value));
 
             // eslint-disable-next-line @typescript-eslint/no-unused-expressions, @typescript-eslint/no-unnecessary-condition, no-console
-            LogFlag && console.log('onEnd', pulldownState.value, pullupState.value);
+            LOG_FLAG && console.log('onEnd', pulldownState.value, pullupState.value);
         });
 
     const contentAnimation = useAnimatedStyle(() => {
@@ -355,9 +366,11 @@ const RefreshWrapper: React.FC<PropsWithChildren<RefreshWrapperProps>> = ({
             }}
         >
             <View style={[styles.flex, styles.overhidden, style]}>
-                <Animated.View style={[styles.pulldownContainer, pulldownLoadingStyle]}>
-                    {pulldownLoading}
-                </Animated.View>
+                {pulldownEnabled && (
+                    <Animated.View style={[styles.pulldownContainer, pulldownLoadingStyle]}>
+                        {pulldownLoading}
+                    </Animated.View>
+                )}
                 <GestureDetector gesture={Gesture.Simultaneous(panGesture, native)}>
                     {React.cloneElement(checkChildren(children as React.ReactElement), {
                         // @ts-ignore
@@ -371,14 +384,15 @@ const RefreshWrapper: React.FC<PropsWithChildren<RefreshWrapperProps>> = ({
                     })}
                 </GestureDetector>
                 {pullupEnabled && (
-                    <View style={[styles.pullupContainer, { height: pullupHeight }]}>
+                    <Animated.View style={[styles.pullupContainer, { height: pullupHeight }]}>
                         {pullupLoading}
-                    </View>
+                    </Animated.View>
                 )}
             </View>
         </PullRefreshContext.Provider>
     );
 };
+
 
 const styles = StyleSheet.create({
     flex: {
@@ -391,16 +405,18 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
     },
     pullupContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
         position: 'absolute',
         bottom: 0,
         left: 0,
         right: 0,
-        zIndex: 4,
     },
     pulldownContainer: {
         justifyContent: 'center',
         alignItems: 'center',
     },
 });
+
 
 export const PullRefresh = memo(RefreshWrapper);

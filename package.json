@@ -1,6 +1,6 @@
 {
     "name": "@unikue/react-native-pull-refresh",
-    "version": "1.2.5",
+    "version": "1.2.6",
     "description": "react-native pull refresh on iOS, Android and Web",
     "main": "dist/commonjs/index",
     "module": "dist/module/index",
@@ -76,7 +76,7 @@
         "react": "19.2.3",
         "react-native": "~0.85.3",
         "react-native-builder-bob": "^0.43.0",
-        "react-native-gesture-handler": "^2.32.0",
+        "react-native-gesture-handler": "~2.31.1",
         "react-native-reanimated": "~4.3.2",
         "release-it": "^20.2.1",
         "source-map-support": "^0.5.21",
