@@ -1,12 +1,11 @@
 import React, { memo, type PropsWithChildren, useCallback } from 'react';
-import type { LayoutChangeEvent, NativeScrollEvent, ViewProps } from 'react-native';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, type LayoutChangeEvent, type NativeScrollEvent, type ViewProps } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, { Extrapolate, interpolate, runOnJS, runOnUI, useAnimatedScrollHandler, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 import { FnNull, PullingRefreshStatus, LOG_FLAG, PULLDOWN_OFFSET, PULLUP_OFFSET } from './constants';
 import { PullRefreshContext } from './context';
-import { PulldownLoading, PullupLoading } from './DefaultLoading';
 import { actuallyMove, checkChildren, withAnimation } from './utils';
+import { PulldownLoading, PullupLoading } from './DefaultLoading';
 
 
 export type RefreshWrapperProps = ViewProps & {
@@ -275,22 +274,19 @@ const RefreshWrapper: React.FC<PropsWithChildren<RefreshWrapperProps>> = ({
 
     const contentAnimation = useAnimatedStyle(() => {
         const isPulldown = pulldownState.value !== PullingRefreshStatus.IDLE;
-        let input = [0, pulldownHeight, containerY.value];
-        let output = [0, pulldownHeight, containerY.value * containerFactor];
+        // 确保 containerY 有下限，避免 onLayout 前 containerY=0 导致
+        // input 数组非单调（如 [0, 120, 0]），使 interpolate 产生 NaN
+        const safeContainerY = Math.max(containerY.value, pulldownHeight + 1);
+        let input = [0, pulldownHeight, safeContainerY];
+        let output = [0, pulldownHeight, safeContainerY * containerFactor];
 
         if (!isPulldown) {
-            input = [-containerY.value, -pullupHeight, 0];
-            output = [-containerY.value * containerFactor, -pullupHeight, 0];
+            const safeContainerY2 = Math.max(containerY.value, pullupHeight + 1);
+            input = [-safeContainerY2, -pullupHeight, 0];
+            output = [-safeContainerY2 * containerFactor, -pullupHeight, 0];
         }
 
         return {
-            /**
-             *    FIXME: #issue 👀
-             *           Pullup to bounce back failed during the quick move down to up
-             *           at the bottom on ios and android simulator.
-             *           However, it works fine on the real device.
-             *           Maybe the simulator cant tracking gestures by mouse normally.
-             *  */
             overflowY:
                 /* for web */
                 pullupState.value !== PullingRefreshStatus.IDLE || pulldownState.value !== PullingRefreshStatus.IDLE || lockIDLE.value ? 'hidden' : 'auto',
