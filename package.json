@@ -1,6 +1,6 @@
 {
     "name": "@unikue/react-native-pull-refresh",
-    "version": "1.2.9",
+    "version": "1.2.10",
     "description": "react-native pull refresh on iOS, Android and Web",
     "main": "dist/commonjs/index",
     "module": "dist/module/index",
@@ -58,13 +58,11 @@
         "registry": "https://registry.npmjs.org/"
     },
     "devDependencies": {
-        "@commitlint/config-conventional": "21.2.0",
         "@react-native/eslint-config": "~0.85.3",
         "@release-it/conventional-changelog": "^11.0.1",
         "@types/jest": "^30.0.0",
         "@types/react": "~19.2.17",
         "@types/react-native": "0.73.0",
-        "commitlint": "^21.2.0",
         "conventional-changelog-cli": "^5.0.0",
         "del-cli": "^7.0.0",
         "eslint": "^9.39.4",
@@ -72,14 +70,13 @@
         "jest": "^29.7.0",
         "lottie-react-native": "^7.3.8",
         "pod-install": "^1.1.0",
-        "prettier": "^3.9.4",
+        "prettier": "^3.9.5",
         "react": "19.2.3",
         "react-native": "~0.85.3",
         "react-native-builder-bob": "^0.43.0",
-        "react-native-gesture-handler": "~2.31.1",
+        "react-native-gesture-handler": "~2.31.2",
         "react-native-reanimated": "~4.3.2",
         "release-it": "^20.2.1",
-        "source-map-support": "^0.5.21",
         "typescript": "^6.0.3"
     },
     "overrides": {

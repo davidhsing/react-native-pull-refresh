@@ -103,11 +103,11 @@ const RefreshWrapper: React.FC<PropsWithChildren<RefreshWrapperProps>> = ({
             if (pulldownState.value >= PullingRefreshStatus.PULLINGBACK || pullupState.value >= PullingRefreshStatus.PULLINGBACK) {
                 return;
             }
-            if (scrollerOffsetY.value <= PULLDOWN_OFFSET && pulldownState.value === PullingRefreshStatus.IDLE && event.translationY > 0) {
+            if (pulldownEnabled && scrollerOffsetY.value <= PULLDOWN_OFFSET && pulldownState.value === PullingRefreshStatus.IDLE && event.translationY > 0) {
                 pulldownState.value = PullingRefreshStatus.PULLING;
                 recordValue.value = event.translationY;
             }
-            if (scrollerOffsetY.value >= contentY.value - containerY.value - PULLUP_OFFSET && pullupState.value === PullingRefreshStatus.IDLE && event.translationY < 0) {
+            if (pullupEnabled && scrollerOffsetY.value >= contentY.value - containerY.value - PULLUP_OFFSET && pullupState.value === PullingRefreshStatus.IDLE && event.translationY < 0) {
                 pullupState.value = PullingRefreshStatus.PULLING;
                 recordValue.value = event.translationY;
             }
@@ -131,19 +131,16 @@ const RefreshWrapper: React.FC<PropsWithChildren<RefreshWrapperProps>> = ({
                     pullupState.value = PullingRefreshStatus.IDLE;
                 }
 
-                if (scrollerOffsetY.value <= PULLDOWN_OFFSET) {
+                if (pulldownEnabled && scrollerOffsetY.value <= PULLDOWN_OFFSET) {
                     const newStatus = actuallyMove(event.translationY, containerY.value) > pulldownHeight * pullingFactor ? PullingRefreshStatus.PULLINGGO : PullingRefreshStatus.PULLING;
-
                     if (newStatus !== pulldownState.value) {
                         if (pulldownState.value === PullingRefreshStatus.IDLE) {
                             recordValue.value = event.translationY;
                         }
-
                         pulldownState.value = newStatus;
                     }
 
                     const move = event.translationY - recordValue.value;
-
                     if (move < 0) {
                         pulldownState.value = PullingRefreshStatus.IDLE;
                     } else {
@@ -165,21 +162,18 @@ const RefreshWrapper: React.FC<PropsWithChildren<RefreshWrapperProps>> = ({
                     // eslint-disable-next-line no-console
                     console.log('onChangeBottom', scrollerOffsetY.value >= contentY.value - containerY.value - PULLUP_OFFSET);
 
-                if (scrollerOffsetY.value >= contentY.value - containerY.value - PULLUP_OFFSET) {
+                if (pullupEnabled && scrollerOffsetY.value >= contentY.value - containerY.value - PULLUP_OFFSET) {
                     const newStatus = actuallyMove(-event.translationY, containerY.value) > pullupHeight * pullingFactor ? PullingRefreshStatus.PULLINGGO : PullingRefreshStatus.PULLING;
-
                     if (newStatus !== pullupState.value) {
                         // TODO: 个人感觉是这个值记录得有问题
                         if (pullupState.value === PullingRefreshStatus.IDLE) {
                             recordValue.value = event.translationY;
                         }
-
                         pullupState.value = newStatus;
                     }
 
                     // noinspection UnnecessaryLocalVariableJS
                     const move = event.translationY - recordValue.value;
-
                     // if (move > 0) {
                     //   pullupState.value = PullingRefreshStatus.IDLE;
                     // } else {

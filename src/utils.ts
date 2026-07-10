@@ -4,8 +4,8 @@ import Animated, { interpolate, withSpring } from 'react-native-reanimated';
 import { iOSpringConfig } from './constants';
 
 
-export const delayTime = (time = 1000) => new Promise((resolve: PromiseCallback<unknown>) => {
-    setTimeout(() => resolve(null), time);
+export const delayTime = (time = 1000) => new Promise<void>((resolve) => {
+    setTimeout(() => resolve(), time);
 });
 
 
@@ -29,16 +29,16 @@ export const checkChildren = (children: React.ReactElement<unknown, any>) => {
     as a Child`);
 };
 
+
 export const withAnimation = (value: number, callback?: () => void) => {
     // noinspection BadExpressionStatementJS
     'worklet';
-
     return withSpring(value, iOSpringConfig, finished => finished && callback && callback());
 };
+
 
 export const actuallyMove = (move: number, toMove: number) => {
     // noinspection BadExpressionStatementJS
     'worklet';
-
     return interpolate(move, [0, toMove], [0, toMove]);
 };
