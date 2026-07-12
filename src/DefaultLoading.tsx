@@ -6,9 +6,11 @@ import { useOnPulldownState, useOnPullupState, usePulldownLoadingAnimation, useP
 
 // note: react-native-reanimated only suppot style-animation
 
+
 interface LoadingProps {
     animating?: boolean;
 }
+
 
 export const Loading: React.FC<LoadingProps> = ({ animating }) => (
     <View style={styles.loadingInner}>

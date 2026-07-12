@@ -14,10 +14,12 @@ react-native pull refresh on iOS, Android and Web
 | Android  | ✅ | 😂 Bottom response is bad                     |
 | Web      | ✅ | 😭 Pulling and scrolling cant switch smoothly |
 
-| Library                      |     |
-|------------------------------|-----|
-| react-native-gesture-handler | 2.x |
-| react-native-reanimated      | 4.x |
+### 💥 Compatibility
+
+| react-native-pull-refresh | react-native |
+|---------------------------|--------------|
+| 1.2.x                     | 0.85.x       |
+| 1.3.x                     | 0.86.x       |
 
 #### ⚠️ Warning
 `react-native-pull-refresh` Only support wrapper `Animated.ScrollView` and `Animated.FlatList`

@@ -1,8 +1,7 @@
-import LottieView from 'lottie-react-native';
 import React, { useRef } from 'react';
 import { StyleSheet } from 'react-native';
 import Animated, { Extrapolate, interpolate, useAnimatedStyle, useDerivedValue } from 'react-native-reanimated';
-
+import LottieView from 'lottie-react-native';
 import heroJson from './assets/hero.json';
 // import heroLottie from './assets/hero.lottie';
 import { PullingRefreshStatus } from './constants';

@@ -300,16 +300,15 @@ const RefreshWrapper: React.FC<PropsWithChildren<RefreshWrapperProps>> = ({
         };
     });
 
+    // 提前提取 children 的 onScroll 回调（纯函数引用），避免 worklet 闭包捕获整个 children（React 元素含 FiberNode）
+    // reanimated 4.5+ 会对闭包变量做序列化检查，React 元素内的 FiberNode 无法序列化
+    const childOnScroll = React.isValidElement(children) ? (children.props as { onScroll?: (event: NativeScrollEvent) => void }).onScroll : undefined;
     const onScroll = useAnimatedScrollHandler((event: NativeScrollEvent) => {
         // FIXME: 下拉刷新是一定依赖这个数据值的，不然你无法处理的
         scrollerOffsetY.value = event.contentOffset.y;
         // LogFlag && console.log('onScroll', event.contentOffset);
-
-        const _children = children as React.ReactElement;
-        // @ts-ignore
-        if (_children.props?.onScroll) {
-            // @ts-ignore
-            runOnJS(_children.props.onScroll)(event);
+        if (childOnScroll) {
+            runOnJS(childOnScroll)(event);
         }
     });
 

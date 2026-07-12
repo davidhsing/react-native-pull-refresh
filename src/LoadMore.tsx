@@ -1,7 +1,6 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 import { useAnimatedReaction } from 'react-native-reanimated';
-
 import { FnNull } from './constants';
 import { usePullRefreshValue } from './hooks';
 
